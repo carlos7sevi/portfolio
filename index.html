@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carlos | Catálogo interactivo de pianos Kawai</title>
+  <meta name="description" content="Portafolio de Carlos: App móvil de catálogo interactivo de pianos Kawai con navegación avanzada, vídeos, soporte multilingüe y diseño adaptativo." />
+  <meta property="og:title" content="Catálogo interactivo de pianos Kawai — Portafolio de Carlos" />
+  <meta property="og:description" content="Navegación avanzada, reproducción de vídeos, soporte multilingüe y diseño adaptativo." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/k.png" />
+  <link rel="icon" href="assets/k.png" />
+  <style>
+    :root{
+      --bg:#ffffff;
+      --fg:#0a0a0a;
+      --muted:#6b7280;
+      --accent:#0b5fff; /* azul principal */
+      --accent-600:#0a4ed4;
+      --border:#e5e7eb;
+      --card:#f8fafc;
+      --shadow:0 10px 30px rgba(0,0,0,.08);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;line-height:1.5}
+    a{color:var(--accent);text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    header{position:sticky;top:0;background:rgba(255,255,255,.8);backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid var(--border);z-index:50}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:700}
+    .brand img{width:32px;height:32px;border-radius:8px}
+    .nav a{margin-left:18px;color:#111;font-weight:600}
+    .lang-select{display:flex;align-items:center;gap:8px}
+    select{padding:8px 10px;border:1px solid var(--border);border-radius:10px;background:#fff}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center;padding:60px 0}
+    .hero h1{font-size:clamp(28px,4vw,44px);line-height:1.1;margin:0 0 12px}
+    .hero p{color:var(--muted);margin:0 0 22px}
+    .badges{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 24px}
+    .badge{background:var(--card);border:1px solid var(--border);padding:8px 12px;border-radius:999px;font-size:14px}
+    .cta{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{padding:12px 16px;border-radius:12px;border:1px solid var(--border);background:#fff;font-weight:700;box-shadow:var(--shadow)}
+    .btn.primary{background:var(--accent);color:#fff;border-color:transparent}
+    .btn.primary:hover{background:var(--accent-600)}
+    .mock{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow)}
+
+    /* Section */
+    section{padding:42px 0}
+    .section-title{display:flex;align-items:end;justify-content:space-between;margin-bottom:16px}
+    h2{font-size:clamp(22px,3.2vw,32px);margin:0}
+    .section-sub{color:var(--muted)}
+
+    /* Features grid */
+    .grid{display:grid;gap:18px}
+    .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+    .grid.cols-2{grid-template-columns:repeat(2,1fr)}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    .card h3{margin:8px 0 6px;font-size:18px}
+    .card p{margin:0;color:var(--muted)}
+
+    /* Gallery */
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .item{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+    .item .meta{padding:12px}
+    .tags{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{font-size:12px;background:#eef2ff;border:1px solid #e0e7ff;padding:4px 8px;border-radius:999px}
+
+    /* Tech */
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:12px}
+    .kpi{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;box-shadow:var(--shadow)}
+    .kpi b{display:block;font-size:22px}
+
+    /* Footer */
+    footer{border-top:1px solid var(--border);padding:32px 0;margin-top:20px;color:var(--muted)}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr}
+      .gallery{grid-template-columns:repeat(2,1fr)}
+      .grid.cols-3{grid-template-columns:repeat(2,1fr)}
+      .kpis{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:640px){
+      .gallery{grid-template-columns:1fr}
+      .grid.cols-3,.grid.cols-2{grid-template-columns:1fr}
+    }
+
+    /* Subtle reveal animation */
+    .reveal{opacity:0;transform:translateY(12px);transition:all .6s ease}
+    .reveal.visible{opacity:1;transform:none}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <img src="assets/k.png" alt="Logo" />
+        <span>Carlos — Portafolio</span>
+      </div>
+      <nav>
+        <a href="#proyecto" data-i18n="nav.project">Proyecto</a>
+        <a href="#galeria" data-i18n="nav.gallery">Galería</a>
+        <a href="#tecnologias" data-i18n="nav.tech">Tecnologías</a>
+        <a href="#sobre" data-i18n="nav.about">Sobre el proyecto</a>
+        <a href="#contacto" data-i18n="nav.contact">Contacto</a>
+      </nav>
+      <div class="lang-select">
+        <label for="lang" class="visually-hidden">Idioma</label>
+        <select id="lang" aria-label="Idioma">
+          <option value="es">ES</option>
+          <option value="en">EN</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+<section class="hero container">
+  <div>
+    <h1 data-i18n="hero.title">Aplicación de catálogo Kawai</h1>
+    <p data-i18n="hero.subtitle">
+      App móvil desarrollada en Kotlin con Jetpack Compose, diseño adaptativo, soporte multilingüe (ES/IT) y reproducción de vídeos mediante ExoPlayer.
+    </p>
+    <div class="badges">
+      <span class="badge">Android</span>
+      <span class="badge">Kotlin</span>
+      <span class="badge">Jetpack Compose</span>
+      <span class="badge">ExoPlayer</span>
+      <span class="badge" data-i18n="badges.responsive">Responsive</span>
+      <span class="badge" data-i18n="badges.multilang">Multilingüe</span>
+    </div>
+    <div class="cta">
+      <a class="btn primary" href="#video" data-i18n="cta.demo">Ver demo</a>
+      <a class="btn" href="https://github.com/USUARIO/REPO" target="_blank" rel="noopener" data-i18n="cta.repo">Ver repositorio</a>
+    </div>
+  </div>
+  <div class="mock reveal">
+    <img src="assets/menu.png" alt="Pantalla principal de la app Kawai" />
+  </div>
+</section>
+
+
+  <!-- Proyecto -->
+<section id="proyecto">
+  <div class="container">
+    <div class="section-title">
+      <h2 data-i18n="project.title">Proyecto destacado</h2>
+      <span class="section-sub" data-i18n="project.subtitle">Visión general</span>
+    </div>
+    <div class="grid cols-3">
+      <div class="card reveal">
+        <h3 data-i18n="project.feature1.title">Catálogo interactivo</h3>
+        <p data-i18n="project.feature1.desc">
+          Navegación estructurada por series y modelos Kawai, con fichas informativas y transiciones suaves entre pantallas.
+        </p>
+      </div>
+      <div class="card reveal">
+        <h3 data-i18n="project.feature2.title">Reproductor multimedia</h3>
+        <p data-i18n="project.feature2.desc">
+          Integración completa de vídeos locales con ExoPlayer, control de bucle y compatibilidad con monitores externos.
+        </p>
+      </div>
+      <div class="card reveal">
+        <h3 data-i18n="project.feature3.title">Internacionalización dinámica</h3>
+        <p data-i18n="project.feature3.desc">
+          Interfaz disponible en español e italiano, con cambio instantáneo de idioma y persistencia de configuración.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Galería -->
+  <section id="galeria">
+    <div class="container">
+      <div class="section-title">
+        <h2 data-i18n="gallery.title">Galería de modelos</h2>
+        <span class="section-sub" data-i18n="gallery.subtitle">Algunos pianos destacados</span>
+      </div>
+      <div class="gallery">
+        <!-- Reemplaza las imágenes por las tuyas en /assets -->
+        <article class="item reveal">
+          <img src="assets/menu_shigeru.png" alt="Menú Shigeru Kawai" />
+          <div class="meta">
+            <h3>Piano de cola</h3>
+            <h4>Modelos Shigeru Kawai</h4>
+            <div class="tags">
+              <span class="tag">SK-EX</span>
+              <span class="tag">SK-2</span>
+              <span class="tag">SK-3</span>
+              <span class="tag">SK-5</span>
+              <span class="tag">SK-6</span>
+              <span class="tag">SK-7</span>
+            </div>
+          </div>
+        </article>
+        <article class="item reveal">
+          <img src="assets/k-15e.png" alt="Kawai K-15E" />
+          <div class="meta">
+            <h3>Piano vertical</h3>
+            <h4>K-15E</h4>
+            <div class="tags">
+
+            </div>
+          </div>
+        </article>  
+        <article class="item reveal">
+          <img src="assets/gl40.png" alt="Kawai GL-40" />
+          <div class="meta">
+            <h3>Piano de cola</h3>
+            <h4>Modelo GL</h4>
+            <h4>GL-40</h4>
+            <div class="tags">
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video demo -->
+  <section id="video">
+    <div class="container">
+      <div class="section-title">
+        <h2 data-i18n="video.title">Demo en vídeo</h2>
+        <span class="section-sub" data-i18n="video.subtitle">Recorrido rápido por la app</span>
+      </div>
+      <div class="card reveal" style="padding:0;overflow:hidden">
+        <!-- Sustituye src por tu enlace de YouTube o archivo en assets/video.mp4 -->
+        <div style="position:relative;padding-bottom:56.25%;height:0">
+          <iframe id="demoFrame" src="https://www.youtube.com/embed/VIDEO_ID" title="Demo Kawai App"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tecnologías & Métricas -->
+  <section id="tecnologias">
+    <div class="container">
+      <div class="section-title">
+        <h2 data-i18n="tech.title">Tecnologías</h2>
+        <span class="section-sub" data-i18n="tech.subtitle">Stack y capacidades</span>
+      </div>
+      <div class="grid cols-2">
+        <div class="card reveal">
+          <h3>Stack</h3>
+          <p>Android Studio, Kotlin, Jetpack Compose, Material Design 3, ExoPlayer, Coroutine Flows, Navigation Component, i18n (Español/Italiano), Responsive UI, Inactivity Tracker.</p>
+        </div>
+        <div class="card reveal">
+          <h3 data-i18n="tech.capabilities">Capacidades</h3>
+          <p data-i18n="tech.capabilities.desc">
+    Reproducción de vídeos locales, control de inactividad con salvapantallas, navegación avanzada entre secciones, soporte multilingüe dinámico (español e italiano), interfaz adaptable para monitores y tablets, y diseño visual optimizado con fondos personalizados.
+</p>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi reveal"><b>~250ms</b><span data-i18n="kpi.load">Tiempo medio de carga</span></div>
+        <div class="kpi reveal"><b>2 idiomas</b><span data-i18n="kpi.langs">ES / IT</span></div>
+        <div class="kpi reveal"><b>40+ modelos</b><span data-i18n="kpi.models">Pianos en catálogo</span></div>
+        <div class="kpi reveal"><b>100%</b><span data-i18n="kpi.responsive">Interfaz adaptativa</span></div>
+        <div class="kpi reveal"><b>0 fallos</b><span data-i18n="kpi.crashfree">Rendimiento estable</span></div>
+      </div>
+    </div>
+  </section>
+
+ <!-- Sobre el proyecto -->
+<section id="sobre">
+  <div class="container">
+    <div class="section-title">
+      <h2 data-i18n="about.title">Sobre el proyecto</h2>
+      <span class="section-sub" data-i18n="about.subtitle">Rol, responsabilidades y resultados</span>
+    </div>
+    <div class="grid cols-2">
+      <div class="card reveal">
+        <h3 data-i18n="about.role.title">Mi rol</h3>
+        <p data-i18n="about.role.desc">
+          Desarrollador principal de la app Kawai: estructura de navegación, UI/UX con Jetpack Compose, integración de vídeos con ExoPlayer, sistema de inactividad con salvapantallas y soporte multilingüe dinámico (ES/IT).
+        </p>
+      </div>
+      <div class="card reveal">
+        <h3 data-i18n="about.challenges.title">Retos y soluciones</h3>
+        <p data-i18n="about.challenges.desc">
+          Adaptar la interfaz a diferentes pantallas y monitores, optimizar el rendimiento de los vídeos y mantener la coherencia visual del catálogo. Se resolvió con layouts responsivos, reutilización de componentes y caching local.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Contacto -->
+  <section id="contacto">
+    <div class="container">
+      <div class="section-title">
+        <h2 data-i18n="contact.title">Contacto</h2>
+        <span class="section-sub" data-i18n="contact.subtitle">¿Hablamos?</span>
+      </div>
+      <div class="grid cols-2">
+        <div class="card reveal">
+          <h3 data-i18n="contact.links">Enlaces</h3>
+          <p>
+            <a href="mailto:carlos7sevi@gmail.com">carlos7sevi@gmail.com</a><br/>
+            <a href="https://github.com/carlos7sevi" target="_blank" rel="noopener">github.com/carlos7sevi</a><br/>
+            <a href="https://www.linkedin.com/in/carlos-fernández-de-sevilla-almarza-213430306/" target="_blank" rel="noopener">LinkedIn</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      © <span id="year"></span> Carlos. <span data-i18n="footer.made">Hecho con cariño y buen código.</span>
+    </div>
+  </footer>
+
+  <script>
+  // Año
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Animación de aparición
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: .1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // i18n simple (ES/EN)
+  const dict = {
+    es: {
+      'nav.project': 'Proyecto',
+      'nav.gallery': 'Galería',
+      'nav.tech': 'Tecnologías',
+      'nav.about': 'Sobre el proyecto',
+      'nav.contact': 'Contacto',
+
+      'hero.title': 'Aplicación de catálogo Kawai',
+      'hero.subtitle': 'App móvil desarrollada en Kotlin con Jetpack Compose, diseño adaptativo, soporte multilingüe (ES/IT) y reproducción de vídeos mediante ExoPlayer.',
+      'badges.responsive': 'Responsive',
+      'badges.multilang': 'Multilingüe',
+      'cta.demo': 'Ver demo',
+      'cta.repo': 'Ver repositorio',
+
+      'project.title': 'Proyecto destacado',
+      'project.subtitle': 'Visión general',
+      'project.feature1.title': 'Catálogo interactivo',
+      'project.feature1.desc': 'Navegación estructurada por series y modelos Kawai, con fichas informativas y transiciones suaves entre pantallas.',
+      'project.feature2.title': 'Reproductor multimedia',
+      'project.feature2.desc': 'Integración completa de vídeos locales con ExoPlayer, control de bucle y compatibilidad con monitores externos.',
+      'project.feature3.title': 'Internacionalización dinámica',
+      'project.feature3.desc': 'Interfaz disponible en español e italiano, con cambio instantáneo de idioma y persistencia de configuración.',
+
+      'gallery.title': 'Galería de modelos',
+      'gallery.subtitle': 'Algunos pianos destacados',
+
+      'video.title': 'Demo en vídeo',
+      'video.subtitle': 'Recorrido rápido por la app',
+
+      'tech.title': 'Tecnologías',
+      'tech.subtitle': 'Stack y capacidades',
+      'tech.capabilities': 'Capacidades',
+      'tech.capabilities.desc': 'Reproducción de vídeos locales, control de inactividad con salvapantallas, navegación avanzada entre secciones, soporte multilingüe dinámico (español e italiano), interfaz adaptable para monitores y tablets, y diseño visual optimizado con fondos personalizados.',
+
+      'kpi.load': 'Tiempo medio de carga',
+      'kpi.langs': 'ES / IT',
+      'kpi.models': 'Pianos en catálogo',
+      'kpi.responsive': 'Interfaz adaptativa',
+      'kpi.crashfree': 'Rendimiento estable',
+
+      'about.title': 'Sobre el proyecto',
+      'about.subtitle': 'Rol, responsabilidades y resultados',
+      'about.role.title': 'Mi rol',
+      'about.role.desc': 'Desarrollador principal de la app Kawai: estructura de navegación, UI/UX con Jetpack Compose, integración de vídeos con ExoPlayer, sistema de inactividad con salvapantallas y soporte multilingüe dinámico (ES/IT).',
+      'about.challenges.title': 'Retos y soluciones',
+      'about.challenges.desc': 'Adaptar la interfaz a diferentes pantallas y monitores, optimizar el rendimiento de los vídeos y mantener la coherencia visual del catálogo. Se resolvió con layouts responsivos, reutilización de componentes y caching local.',
+
+      'contact.title': 'Contacto',
+      'contact.subtitle': '¿Hablamos?',
+      'contact.links': 'Enlaces',
+
+      'footer.made': 'Hecho con cariño y buen código.'
+    },
+
+    en: {
+      'nav.project': 'Project',
+      'nav.gallery': 'Gallery',
+      'nav.tech': 'Technologies',
+      'nav.about': 'About the Project',
+      'nav.contact': 'Contact',
+
+      'hero.title': 'Kawai Piano Catalog App',
+      'hero.subtitle': 'Mobile app developed in Kotlin with Jetpack Compose, adaptive design, multilingual support (ES/IT), and video playback using ExoPlayer.',
+      'badges.responsive': 'Responsive',
+      'badges.multilang': 'Multilingual',
+      'cta.demo': 'Watch Demo',
+      'cta.repo': 'View Repository',
+
+      'project.title': 'Featured Project',
+      'project.subtitle': 'Overview',
+      'project.feature1.title': 'Interactive Catalog',
+      'project.feature1.desc': 'Structured navigation through Kawai series and models, with informative sheets and smooth transitions between screens.',
+      'project.feature2.title': 'Multimedia Player',
+      'project.feature2.desc': 'Full integration of local videos using ExoPlayer, loop control, and compatibility with external monitors.',
+      'project.feature3.title': 'Dynamic Internationalization',
+      'project.feature3.desc': 'Interface available in Spanish and Italian with instant language switching and persistent configuration.',
+
+      'gallery.title': 'Model Gallery',
+      'gallery.subtitle': 'Highlighted Pianos',
+
+      'video.title': 'Video Demo',
+      'video.subtitle': 'Quick Overview of the App',
+
+      'tech.title': 'Technologies',
+      'tech.subtitle': 'Stack & Capabilities',
+      'tech.capabilities': 'Capabilities',
+      'tech.capabilities.desc': 'Local video playback, inactivity control with screensaver, advanced navigation between sections, dynamic multilingual support (Spanish and Italian), adaptive interface for monitors and tablets, and optimized visuals with custom backgrounds.',
+
+      'kpi.load': 'Average Load Time',
+      'kpi.langs': 'ES / IT',
+      'kpi.models': 'Pianos in Catalog',
+      'kpi.responsive': 'Adaptive Interface',
+      'kpi.crashfree': 'Stable Performance',
+
+      'about.title': 'About the Project',
+      'about.subtitle': 'Role, Responsibilities & Results',
+      'about.role.title': 'My Role',
+      'about.role.desc': 'Lead developer of the Kawai app: navigation structure, UI/UX with Jetpack Compose, video integration via ExoPlayer, inactivity system with screensaver, and dynamic multilingual support (ES/IT).',
+      'about.challenges.title': 'Challenges & Solutions',
+      'about.challenges.desc': 'Adapting the interface to different screens and monitors, optimizing video performance, and maintaining catalog consistency. Solved through responsive layouts, component reuse, and local caching.',
+
+      'contact.title': 'Contact',
+      'contact.subtitle': 'Let’s Talk',
+      'contact.links': 'Links',
+
+      'footer.made': 'Made with care and clean code.'
+    }
+  };
+
+  const setLang = (lang) => {
+    const t = dict[lang] || dict.es;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const k = el.getAttribute('data-i18n');
+      if (t[k]) el.textContent = t[k];
+    });
+    document.documentElement.lang = lang;
+    localStorage.setItem('lang', lang);
+  };
+
+  const selector = document.getElementById('lang');
+  selector.addEventListener('change', e => setLang(e.target.value));
+  setLang(localStorage.getItem('lang') || 'es');
+</script>
+
+</body>
+</html>
