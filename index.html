@@ -135,7 +135,7 @@
     </div>
     <div class="cta">
       <a class="btn primary" href="#video" data-i18n="cta.demo">Ver demo</a>
-      <a class="btn" href="https://github.com/USUARIO/REPO" target="_blank" rel="noopener" data-i18n="cta.repo">Ver repositorio</a>
+      <a class="btn" href="https://carlos7sevi.github.io/portfolio/" target="_blank" rel="noopener" data-i18n="cta.repo">Ver repositorio</a>
     </div>
   </div>
   <div class="mock reveal">
@@ -224,22 +224,26 @@
   </section>
 
   <!-- Video demo -->
-  <section id="video">
-    <div class="container">
-      <div class="section-title">
-        <h2 data-i18n="video.title">Demo en vídeo</h2>
-        <span class="section-sub" data-i18n="video.subtitle">Recorrido rápido por la app</span>
-      </div>
-      <div class="card reveal" style="padding:0;overflow:hidden">
-        <!-- Sustituye src por tu enlace de YouTube o archivo en assets/video.mp4 -->
-        <div style="position:relative;padding-bottom:56.25%;height:0">
-          <iframe id="demoFrame" src="https://www.youtube.com/embed/VIDEO_ID" title="Demo Kawai App"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>
-        </div>
-      </div>
+<section id="video">
+  <div class="container">
+    <div class="section-title">
+      <h2 data-i18n="video.title">Demo en vídeo</h2>
+      <span class="section-sub" data-i18n="video.subtitle">Recorrido rápido por la app</span>
     </div>
-  </section>
+
+<div class="card reveal" style="padding:30px;overflow:hidden;text-align:center;">
+  <div style="display:inline-block;background:#000;border-radius:30px;padding:10px;">
+    <video controls autoplay muted loop
+      style="width:auto;max-height:580px;max-width:300px;border-radius:20px;box-shadow:0 6px 20px rgba(0,0,0,0.25);">
+      <source src="assets/videoApp_recortado.webm" type="video/webm">
+      Tu navegador no soporta el video HTML5.
+    </video>
+  </div>
+</div>
+
+  </div>
+</section>
+
 
   <!-- Tecnologías & Métricas -->
   <section id="tecnologias">
